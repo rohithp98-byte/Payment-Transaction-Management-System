@@ -1,0 +1,92 @@
+{
+  "info": {
+    "name": "SEZG583 Payment Transaction Demo",
+    "description": "Synthetic data only. Run payment and transaction services locally or via port-forward.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Payment Service health",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8000/health",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "health"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create synthetic payment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"merchant_id\": \"MERCHANT-1001\",\n  \"amount\": \"1500.00\",\n  \"currency\": \"INR\",\n  \"payment_method\": \"TEST_CARD\",\n  \"idempotency_key\": \"postman-demo-0001\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8000/payments",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "payments"
+          ]
+        }
+      }
+    },
+    {
+      "name": "List transactions",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8001/transactions",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8001",
+          "path": [
+            "transactions"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Transaction Service health",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8001/health",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8001",
+          "path": [
+            "health"
+          ]
+        }
+      }
+    }
+  ]
+}
