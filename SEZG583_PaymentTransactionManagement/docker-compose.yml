@@ -1,0 +1,33 @@
+services:
+  transaction-service:
+    build: ./transaction-service
+    image: transaction-service:1.0
+    environment:
+      DB_PATH: /data/transactions.db
+    volumes:
+      - transaction-data:/data
+    ports:
+      - "8001:8001"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  payment-service:
+    build: ./payment-service
+    image: payment-service:1.0
+    environment:
+      DB_PATH: /data/payments.db
+      TRANSACTION_SERVICE_URL: http://transaction-service:8001
+    volumes:
+      - payment-data:/data
+    ports:
+      - "8000:8000"
+    depends_on:
+      transaction-service:
+        condition: service_healthy
+
+volumes:
+  payment-data:
+  transaction-data:
